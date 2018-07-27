@@ -1,0 +1,21 @@
+<root>
+	<!-- 1 2 3抱摔技能 -->
+	<skill id="1" Name="过肩摔" TimeLine="TimeLine/Skill01" StateName="" SelfEffect="" TargetEffect=""  TargetType="1" Distance="0.9" AreaBuff="" BehaviorBuff="2,1,4" MoveBuff="" HurtBuff="2,2,1" ControlBuff="1,1,1;2,1,1"/> <!-- 1自己2目标方, 1开始2Hit, buff TypeID-->
+	<skill id="2" Name="剪刀脚" TimeLine="TimeLine/Skill02" StateName="" SelfEffect="" TargetEffect=""  TargetType="1" Distance="0.9" AreaBuff="" BehaviorBuff="2,1,4" MoveBuff="" HurtBuff="2,2,1" ControlBuff="1,1,1;2,1,1"/>
+	<skill id="3" Name="抱摔" TimeLine="TimeLine/Skill03" StateName="" SelfEffect="" TargetEffect=""  TargetType="1" Distance="0.9" AreaBuff="" BehaviorBuff="2,1,4" MoveBuff="" HurtBuff="2,2,1" ControlBuff="1,1,1;2,1,1" />
+	
+	<skill id="4" Name="远程" TimeLine="TimeLine/Skill07" StateName="MulAtk01" SelfEffect="" TargetEffect="Effects/Effect7" TargetType="1" Distance="10" AreaBuff="3,1,1" BehaviorBuff="2,2,1" MoveBuff="2,2,5" HurtBuff="2,2,1" ControlBuff=""/>
+	<skill id="5" Name="冲锋" TimeLine="TimeLine/Skill04" StateName="MulAtk01" SelfEffect="Effects/Atk1" TargetEffect="" TargetType="0" Distance="1" AreaBuff="" BehaviorBuff="2,2,3" MoveBuff="1,1,3" HurtBuff="2,2,1" ControlBuff="1,1,2"/>
+	<skill id="6" Name="" TimeLine="TimeLine/Skill05" StateName="MulAtk02" SelfEffect="Effects/Atk1" TargetEffect="" TargetType="1" Distance="1" AreaBuff="" BehaviorBuff="2,2,2" MoveBuff="" HurtBuff="2,2,1" ControlBuff=""/>
+	<skill id="7" Name="" TimeLine="TimeLine/Skill06" StateName="" SelfEffect="Effects/Atk1" TargetEffect="" TargetType="1" Distance="1" AreaBuff="" BehaviorBuff="2,2,1" MoveBuff="2,2,3" HurtBuff="" ControlBuff=""/>
+		
+	<skill id="8" Name="怪物远程" TimeLine="TimeLine/Skill07" StateName="MulAtk01" SelfEffect="" TargetEffect="Effects/Effect7" TargetType="1" Distance="10" AreaBuff="" BehaviorBuff="" MoveBuff="" HurtBuff="" ControlBuff=""/>
+	<skill id="9" Name="" TimeLine="TimeLine/Skill04" StateName="MulAtk01" SelfEffect="Effects/Atk1" TargetEffect="" TargetType="1" Distance="1" AreaBuff="" BehaviorBuff="" MoveBuff="" HurtBuff="" ControlBuff=""/>
+	<skill id="10" Name="" TimeLine="TimeLine/Skill05" StateName="MulAtk02" SelfEffect="Effects/Atk1" TargetEffect="" TargetType="1" Distance="1" AreaBuff="" BehaviorBuff="" MoveBuff="" HurtBuff="" ControlBuff=""/>
+	
+	<!-- 100 101 102 为无目标连击技能, -->
+	<skill id="100" Name="三连击1" TimeLine="" StateName="MulAtk01" SelfEffect="Effects/Atk1" TargetEffect="" TargetType="0" Distance="1" AreaBuff="" BehaviorBuff="2,2,1" MoveBuff="2,2,1" HurtBuff="2,2,1" ControlBuff=""/>
+	<skill id="101" Name="三连击2" TimeLine="" StateName="MulAtk02" SelfEffect="Effects/Atk1" TargetEffect="" TargetType="0" Distance="1" AreaBuff="" BehaviorBuff="2,2,1" MoveBuff="2,2,1" HurtBuff="2,2,1" ControlBuff=""/>
+	<skill id="102" Name="三连击3" TimeLine="" StateName="MulAtk03" SelfEffect="Effects/Atk1" TargetEffect="" TargetType="0" Distance="1" AreaBuff="" BehaviorBuff="2,2,1" MoveBuff="2,2,1" HurtBuff="2,2,1" ControlBuff=""/>
+	
+</root>

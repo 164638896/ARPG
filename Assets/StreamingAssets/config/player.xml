@@ -1,0 +1,4 @@
+<root>
+	<player id="1" res="model/player" hp="100" atk="100" def="90" MoveSpeed="5" MulSkill="100,101,102" Skill="4,5,1"/>
+	<player id="2" res="model/player" hp="100" atk="10" def="5" MoveSpeed="5" MulSkill="100,101,102" Skill="5,6,7"/>
+</root>

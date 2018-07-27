@@ -1,0 +1,4 @@
+<root>
+	<AreaBuff id="1" Name="区域buff" Duration="1" Shape="1" Radius="1,1,1" DelayTime="0.2" RepeatRate="0.25" Destroy="1" Effect="" DestroyEffect="" BehaviorBuff="2,1,1" MoveBuff="" HurtBuff="" ControlBuff="1,1,1;2,1,1"/> <!-- 1自己方2目标方, 1开始2Hit, buff TypeID-->
+
+</root>

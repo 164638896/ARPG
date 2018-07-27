@@ -1,0 +1,26 @@
+<root>
+	<behavior>  <!-- 行为类型 自己操作相关,能不能移动,能不能攻击 -->
+		<buff id="1" Name="晕眩" Duration="0.5" CanMove="0" CanAtk="0" />
+		<buff id="2" Name="缠绕" Duration="1" CanMove="0" CanAtk="1" />
+		<buff id="3" Name="沉默" Duration="1" CanMove="1" CanAtk="0" />
+		<buff id="4" Name="互动控制" Duration="2" CanMove="0" CanAtk="0" />
+	</behavior>
+	
+	<move> <!-- 位移类型 自己操作相关以及被动,能不能移动 -->
+		<buff id="1" Name="击退" Duration="1" Dir="1" Distance="1"/> 
+		<buff id="2" Name="吸掌" Duration="1" Dir="2" Distance="1"/> 
+		<buff id="3" Name="冲锋" Duration="1" Dir="3" Distance="2" />
+		<buff id="4" Name="后退" Duration="1" Dir="4" Distance="1" />
+		<buff id="5" Name="聚怪" Duration="0.2" Dir="5" Distance="2"/> 
+	</move>
+	
+	<hurt>
+		<buff id="1" Name="单次伤害" Duration="0" StateName="Hit"/>
+		<buff id="2" Name="持续伤害" Duration="1" StateName="Hit"/>
+	</hurt>
+	
+	<control>
+		<buff id="1" Name="不可切换,不可选中" Duration="2" ClearBuff="0" EnableBehavior="1" EnableMove="0" EnableHurt="1" EnableSelect="0"/>
+		<buff id="2" Name="不可选中状态" Duration="1" ClearBuff="0" EnableBehavior="1" EnableMove="1" EnableHurt="1" EnableSelect="0"/>
+	</control>
+</root>
