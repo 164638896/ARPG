@@ -5,14 +5,15 @@ Shader "Shaders/NormalMap"
 	{
 		_Color ("Color Tint", Color) = (1, 1, 1, 1)
 		_MainTex ("Main Tex", 2D) = "white" {}
-		_BumpMap ("Normal Map", 2D) = "bump" {}
-		//_BumpScale ("Bump Scale", Float) = 1.0
-		//_Specular ("Specular", Color) = (1, 1, 1, 1)
-		//_Gloss ("Gloss", Range(8.0, 256)) = 20
-		_RimColor("Rim Color", Color) = (1, 1, 1, 1)
+		
+		[Toggle(AMBIENT)] _EnableAmbient("Ambient", Float) = 0
+		[Toggle(LIGHTCOLOR)] _EnableLightColor("Light Color", Float) = 0
 
-		[Toggle(NORMAL_MAP)] _EnableNormal("Enable Normal", Float) = 0
+		[Toggle(NORMAL_MAP)] _EnableNormal("Normal", Float) = 0
+		_BumpMap("Normal Map", 2D) = "bump" {}
+
 		[Toggle(RIM)] _EnableRIM("Enable Rim", Float) = 0
+		_RimColor("Rim Color", Color) = (1, 1, 1, 1)
 	}
 
 	SubShader 
@@ -26,9 +27,11 @@ Shader "Shaders/NormalMap"
 			#pragma vertex vert
 			#pragma fragment frag
 			
+			#pragma multi_compile __ AMBIENT
+			#pragma multi_compile __ LIGHTCOLOR
 			#pragma multi_compile __ NORMAL_MAP
 			#pragma multi_compile __ RIM
-
+			
 			#include "Lighting.cginc"
 			
 			fixed4 _Color;
@@ -36,9 +39,6 @@ Shader "Shaders/NormalMap"
 			float4 _MainTex_ST;
 			sampler2D _BumpMap;
 			float4 _BumpMap_ST;
-			//float _BumpScale;
-			//fixed4 _Specular;
-			//float _Gloss;
 			fixed4 _RimColor;
 
 			struct a2v 
@@ -79,7 +79,6 @@ Shader "Shaders/NormalMap"
 
 				float3x3 worldToTangent = float3x3(worldTangent, worldBinormal, worldNormal);
 
-				// Transform the light and view dir from world space to tangent space
 				o.lightDir = mul(worldToTangent, o.lightDir);
 				o.viewDir = mul(worldToTangent, o.viewDir);
 #else 
@@ -95,16 +94,20 @@ Shader "Shaders/NormalMap"
 				
 				fixed3 normal;
 #ifdef NORMAL_MAP			
-				// Get the texel in the normal map
 				normal = UnpackNormal(tex2D(_BumpMap, i.uv.zw));
 #else
 				normal = i.normal;
 #endif	
 
-				fixed3 albedo = tex2D(_MainTex, i.uv).rgb * _Color.rgb;
-				fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;
+				fixed3 ambient = fixed3(0,0,0);
+				fixed3 diffuse = tex2D(_MainTex, i.uv).rgb * _Color.rgb;
+#ifdef AMBIENT
+				ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * diffuse;
+#endif
 
-				fixed3 diffuse = _LightColor0.rgb * albedo * max(0, dot(normal, lightDir));
+#ifdef LIGHTCOLOR
+				diffuse = _LightColor0.rgb * diffuse * max(0, dot(normal, lightDir));
+#endif
 
 				//fixed3 halfDir = normalize(lightDir + viewDir);
 				//fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(normal, halfDir)), _Gloss);
@@ -112,7 +115,7 @@ Shader "Shaders/NormalMap"
 				fixed3 rimColor = _RimColor.rgb * (1.0 - dot(normal, viewDir));
 				diffuse += rimColor;
 #endif
-				return fixed4(ambient + diffuse/* + specular*/, 1.0);
+				return fixed4(ambient + diffuse, 1.0);
 			}
 			
 			ENDCG

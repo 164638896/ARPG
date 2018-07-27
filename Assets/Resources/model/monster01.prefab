@@ -5007,6 +5007,7 @@ MonoBehaviour:
   mAnimator: {fileID: 0}
   mAgent: {fileID: 0}
   mCapsuleCollider: {fileID: 0}
+  mRenderers: []
 --- !u!136 &136171121169738430
 CapsuleCollider:
   m_ObjectHideFlags: 1

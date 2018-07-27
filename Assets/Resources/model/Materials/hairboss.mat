@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: hairboss
   m_Shader: {fileID: 4800000, guid: 2d9a53595417b1747b728588c7c88684, type: 3}
-  m_ShaderKeywords: _NORMALMAP _SPECGLOSSMAP
+  m_ShaderKeywords: AMBIENT LIGHTCOLOR _NORMALMAP _SPECGLOSSMAP
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -84,6 +84,10 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EdgeThickness: 0.5
+    - _EnableAmbient: 1
+    - _EnableLightColor: 1
+    - _EnableNormal: 0
+    - _EnableRIM: 0
     - _FalloffPower: 0.5
     - _GlossMapScale: 1
     - _Glossiness: 0.5
