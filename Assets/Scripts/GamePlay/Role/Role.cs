@@ -13,6 +13,7 @@ public class Role : MonoBehaviour
     public Animator mAnimator = null;
     public NavMeshAgent mAgent = null;
     public CapsuleCollider mCapsuleCollider = null;
+    public SkinnedMeshRenderer [] mRenderers = null;
 
     void Awake()
     {
@@ -22,6 +23,7 @@ public class Role : MonoBehaviour
         mAnimator = GetComponent<Animator>();
         mAgent = GetComponent<NavMeshAgent>();
         mCapsuleCollider = GetComponent<CapsuleCollider>();
+        mRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
 
         aWake();
     }

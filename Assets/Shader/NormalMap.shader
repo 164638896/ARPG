@@ -9,6 +9,10 @@ Shader "Shaders/NormalMap"
 		//_BumpScale ("Bump Scale", Float) = 1.0
 		//_Specular ("Specular", Color) = (1, 1, 1, 1)
 		//_Gloss ("Gloss", Range(8.0, 256)) = 20
+		_RimColor("Rim Color", Color) = (1, 1, 1, 1)
+
+		[Toggle(NORMAL_MAP)] _EnableNormal("Enable Normal", Float) = 0
+		[Toggle(RIM)] _EnableRIM("Enable Rim", Float) = 0
 	}
 
 	SubShader 
@@ -22,6 +26,9 @@ Shader "Shaders/NormalMap"
 			#pragma vertex vert
 			#pragma fragment frag
 			
+			#pragma multi_compile __ NORMAL_MAP
+			#pragma multi_compile __ RIM
+
 			#include "Lighting.cginc"
 			
 			fixed4 _Color;
@@ -32,7 +39,8 @@ Shader "Shaders/NormalMap"
 			//float _BumpScale;
 			//fixed4 _Specular;
 			//float _Gloss;
-			
+			fixed4 _RimColor;
+
 			struct a2v 
 			{
 				float4 vertex : POSITION;
@@ -47,6 +55,9 @@ Shader "Shaders/NormalMap"
 				float4 uv : TEXCOORD0;
 				float3 lightDir: TEXCOORD1;
 				float3 viewDir : TEXCOORD2;
+#ifndef NORMAL_MAP
+				float3 normal : NORMAL;
+#endif
 			};
 
 			v2f vert(a2v v)
@@ -55,6 +66,11 @@ Shader "Shaders/NormalMap"
 				o.pos = UnityObjectToClipPos(v.vertex);
 				
 				o.uv.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+
+				o.lightDir = WorldSpaceLightDir(v.vertex);
+				o.viewDir = WorldSpaceViewDir(v.vertex);
+
+#ifdef NORMAL_MAP
 				o.uv.zw = v.texcoord.xy * _BumpMap_ST.xy + _BumpMap_ST.zw;
 
 				fixed3 worldNormal = UnityObjectToWorldNormal(v.normal);  
@@ -64,29 +80,38 @@ Shader "Shaders/NormalMap"
 				float3x3 worldToTangent = float3x3(worldTangent, worldBinormal, worldNormal);
 
 				// Transform the light and view dir from world space to tangent space
-				o.lightDir = mul(worldToTangent, WorldSpaceLightDir(v.vertex));
-				o.viewDir = mul(worldToTangent, WorldSpaceViewDir(v.vertex));
-				
+				o.lightDir = mul(worldToTangent, o.lightDir);
+				o.viewDir = mul(worldToTangent, o.viewDir);
+#else 
+				o.normal = UnityObjectToWorldNormal(v.normal);
+#endif	
 				return o;
 			}
 			
 			fixed4 frag(v2f i) : SV_Target
 			{				
-				fixed3 tangentLightDir = normalize(i.lightDir);
-				fixed3 tangentViewDir = normalize(i.viewDir);
+				fixed3 lightDir = normalize(i.lightDir);
+				fixed3 viewDir = normalize(i.viewDir);
 				
+				fixed3 normal;
+#ifdef NORMAL_MAP			
 				// Get the texel in the normal map
-				fixed3 tangentNormal = UnpackNormal(tex2D(_BumpMap, i.uv.zw));
-				
-				fixed3 albedo = tex2D(_MainTex, i.uv).rgb * _Color.rgb;
-				
-				fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;
-				
-				fixed3 diffuse = _LightColor0.rgb * albedo * max(0, dot(tangentNormal, tangentLightDir));
+				normal = UnpackNormal(tex2D(_BumpMap, i.uv.zw));
+#else
+				normal = i.normal;
+#endif	
 
-				//fixed3 halfDir = normalize(tangentLightDir + tangentViewDir);
-				//fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(tangentNormal, halfDir)), _Gloss);
-				
+				fixed3 albedo = tex2D(_MainTex, i.uv).rgb * _Color.rgb;
+				fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;
+
+				fixed3 diffuse = _LightColor0.rgb * albedo * max(0, dot(normal, lightDir));
+
+				//fixed3 halfDir = normalize(lightDir + viewDir);
+				//fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(normal, halfDir)), _Gloss);
+#ifdef RIM
+				fixed3 rimColor = _RimColor.rgb * (1.0 - dot(normal, viewDir));
+				diffuse += rimColor;
+#endif
 				return fixed4(ambient + diffuse/* + specular*/, 1.0);
 			}
 			
