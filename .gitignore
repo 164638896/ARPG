@@ -2,6 +2,7 @@
 ARPG.csproj
 ARPG.Editor.csproj
 ARPG.sln
+.vs
 
 Library/
 Temp/
