@@ -1,5 +1,5 @@
 
-Shader "Shaders/NormalMap"
+Shader "Shaders/MyStandard"
 {
 	Properties
 	{
@@ -11,6 +11,10 @@ Shader "Shaders/NormalMap"
 
 		[Toggle(NORMAL_MAP)] _EnableNormal("Normal", Float) = 0
 		_BumpMap("Normal Map", 2D) = "bump" {}
+
+		[Toggle(SPECULAR_MAP)] _EnableSpecular("Specular", Float) = 0
+		_SpecularMap("Specular Map", 2D) = "Specular" {}
+		_Gloss("Gloss", Range(2.0, 256)) = 20
 
 		[Toggle(RIM)] _EnableRIM("Enable Rim", Float) = 0
 		_RimColor("Rim Color", Color) = (1, 1, 1, 1)
@@ -30,6 +34,7 @@ Shader "Shaders/NormalMap"
 			#pragma multi_compile __ AMBIENT
 			#pragma multi_compile __ LIGHTCOLOR
 			#pragma multi_compile __ NORMAL_MAP
+			#pragma multi_compile __ SPECULAR_MAP
 			#pragma multi_compile __ RIM
 			
 			#include "Lighting.cginc"
@@ -37,8 +42,14 @@ Shader "Shaders/NormalMap"
 			fixed4 _Color;
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
+			
 			sampler2D _BumpMap;
 			float4 _BumpMap_ST;
+			
+			sampler2D _SpecularMap;
+			float4 _SpecularMap_ST;
+			float _Gloss;
+
 			fixed4 _RimColor;
 
 			struct a2v 
@@ -109,8 +120,11 @@ Shader "Shaders/NormalMap"
 				diffuse = _LightColor0.rgb * diffuse * max(0, dot(normal, lightDir));
 #endif
 
-				//fixed3 halfDir = normalize(lightDir + viewDir);
-				//fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(normal, halfDir)), _Gloss);
+#ifdef SPECULAR_MAP
+				fixed3 halfDir = normalize(lightDir + viewDir);
+				diffuse += _LightColor0.rgb * tex2D(_SpecularMap, i.uv).rgb * pow(max(0, dot(normal, halfDir)), _Gloss);
+#endif
+
 #ifdef RIM
 				fixed3 rimColor = _RimColor.rgb * (1.0 - dot(normal, viewDir));
 				diffuse += rimColor;
