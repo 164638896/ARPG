@@ -63,7 +63,6 @@ class Skill
             {
                 effect.SetColliders(role, skillInfo.mSkillTypeId);
             }
-            skillInfo.mSelfEffect.SetActive(true);
         }
 
         if (skillInfo.mTargetEffect)

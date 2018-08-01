@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class AnimatorStateMachine : StateMachineBehaviour
+public class AnimaStateMachine : StateMachineBehaviour
 {
 
     public Action<int> EnterStateCallBack;

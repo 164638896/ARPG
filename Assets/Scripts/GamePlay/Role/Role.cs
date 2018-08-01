@@ -62,7 +62,7 @@ public class Role : MonoBehaviour
     {
         Animator animator = this.gameObject.GetComponent<Animator>();
 
-        AnimatorStateMachine[] animStateMachine = animator.GetBehaviours<AnimatorStateMachine>();
+        AnimaStateMachine[] animStateMachine = animator.GetBehaviours<AnimaStateMachine>();
         for (int i = 0; i < animStateMachine.Length; ++i)
         {
             animStateMachine[i].EnterStateCallBack = EnterAniState;

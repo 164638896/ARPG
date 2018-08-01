@@ -74,6 +74,19 @@ public class RoleMultAtkState : IState
         base.OnAniEnter(stateHash);
         mSkillInfo = SkillConfig.singleton.GetSkillInfo(mCurrSkillID);
         if (mSkillInfo == null) return;
+
+        if (mSkillInfo.mSelfEffect != null)
+        {
+            mSkillInfo.mSelfEffect.SetActive(false);
+            mSkillInfo.mSelfEffect.SetActive(true);
+        }
+
+        if (mSkillInfo.mTargetEffect != null)
+        {
+            mSkillInfo.mTargetEffect.SetActive(false);
+            mSkillInfo.mTargetEffect.SetActive(true);
+        }
+
         Skill.ExecuteSkill(mRole, mTargetRole, mSkillInfo);
         mChangeState = false;
     }
@@ -82,25 +95,21 @@ public class RoleMultAtkState : IState
     {
         if (mMulAtk > 0 && mMulAtk <= mStateHashList.Count)
         {
-            // 连击单个状态完成
-            for (int i = 0; i < mMulAtk; ++i)
-            {
-                if (stateHash == mStateHashList[i])
-                {
-                    if (mSkillInfo.mSelfEffect)
-                    {
-                        mSkillInfo.mSelfEffect.SetActive(false);
-                    }
-                    return;
-                }
-            }
-  
             // 连击完成
             if (!mRole.mBuffSystem.CanAtk() || stateHash == mStateHashList[mMulAtk + 2])
             {
                 mMulAtk = 0;
                 mAnimator.SetInteger(mParameter, mMulAtk);
                 mChangeState = true;
+
+                for (int i = 0; i < mRole.mRoleData.mMulSkillList.Count; ++i)
+                {
+                    mSkillInfo = SkillConfig.singleton.GetSkillInfo(mRole.mRoleData.mMulSkillList[i]);
+                    if (mSkillInfo != null)
+                    {
+                        mSkillInfo.mSelfEffect.SetActive(false);
+                    }
+                }
             }
         }
     }
