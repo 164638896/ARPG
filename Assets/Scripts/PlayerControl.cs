@@ -9,7 +9,11 @@ public class PlayerControl : MonoBehaviour
     Player mMyPlayer = null;
     PlayerData mMyPlayerData = null;
     bool m_IsGrounded;
-    float m_GroundCheckDistance = 0.3f;
+
+    static float MAX_DISTANCE = 0.5f;
+    static float MIN_DISTANCE = 0.01f;
+
+    float m_GroundCheckDistance = MAX_DISTANCE;
 
     void Start()
     {
@@ -26,7 +30,7 @@ public class PlayerControl : MonoBehaviour
 
             if(!m_IsGrounded)
             {
-                m_GroundCheckDistance = mMyPlayer.mRigidbody.velocity.y < 0 ? 0.3f : 0.01f;
+                m_GroundCheckDistance = mMyPlayer.mRigidbody.velocity.y < 0 ? MAX_DISTANCE : MIN_DISTANCE;
             }
         }
     }
@@ -182,7 +186,7 @@ public class PlayerControl : MonoBehaviour
         {
             if (m_IsGrounded)
             {
-                m_GroundCheckDistance = 0.01f;
+                m_GroundCheckDistance = MIN_DISTANCE;
                 mMyPlayer.mAnimator.applyRootMotion = false;
                 RoleData roleData = mMyPlayer.mRoleData;
 

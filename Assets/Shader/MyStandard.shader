@@ -14,7 +14,7 @@ Shader "Shaders/MyStandard"
 
 		[Toggle(SPECULAR_MAP)] _EnableSpecular("Specular", Float) = 0
 		_SpecularMap("Specular Map", 2D) = "Specular" {}
-		_Gloss("Gloss", Range(2.0, 256)) = 20
+		 _Gloss("Gloss", Range(2.0, 256)) = 20
 
 		[Toggle(RIM)] _EnableRIM("Enable Rim", Float) = 0
 		_RimColor("Rim Color", Color) = (1, 1, 1, 1)
