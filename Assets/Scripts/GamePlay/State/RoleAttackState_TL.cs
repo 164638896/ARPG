@@ -114,9 +114,11 @@ public class RoleAttackState_TL : StateByTime
             return;
         }
 
+        // 获取timeline
         mDirector = mSkillInfo.mTimeline.GetComponent<PlayableDirector>();
         mDirector.Stop();
 
+        // 取出timeline 左边的名字进行绑定右边的资源
         foreach (PlayableBinding bind in mDirector.playableAsset.outputs)
         {
             if (bind.streamName == "Self")
@@ -163,13 +165,14 @@ public class RoleAttackState_TL : StateByTime
                     PlayableAssetEx playableAsset = clip.asset as PlayableAssetEx;
                     if(playableAsset)
                     {
-                        playableAsset.mTL = this;
+                        // 1.自定义脚本获取绑定 自定义的变量
+                        playableAsset.mParamAttackTL = this;
                     }
                 }
             }
         }
 
-        mDirector.Play();
+        mDirector.Play(); // 播放timeline
     }
 
     public override void OnLeave(int stateHash)
@@ -178,6 +181,7 @@ public class RoleAttackState_TL : StateByTime
         base.OnLeave(stateHash);
     }
 
+    // 4.timeline回调回来播放特效
     public void OnBehaviourPlay()
     {
         foreach (var item in mSkillInfo.mBuffIdList)

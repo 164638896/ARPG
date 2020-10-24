@@ -4,17 +4,18 @@ using UnityEngine.Playables;
 
 public class PlayableBehaviourEx : PlayableBehaviour
 {
-    public RoleAttackState_TL mTL;
+    public RoleAttackState_TL mRoleAttackTL;
 
     //public override void OnGraphStart(Playable playable)
     //{
     //    base.OnGraphStart(playable);
     //}
 
+    // 3. 开始播放回调
     public override void OnBehaviourPlay(Playable playable, FrameData info)
     {
         base.OnBehaviourPlay(playable, info);
-        mTL.OnBehaviourPlay();
+        mRoleAttackTL.OnBehaviourPlay();
     }
 
     //public override void PrepareFrame(Playable playable, FrameData info)

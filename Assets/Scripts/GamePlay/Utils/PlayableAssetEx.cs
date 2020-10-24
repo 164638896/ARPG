@@ -4,13 +4,14 @@ using UnityEngine.Playables;
 
 public class PlayableAssetEx : PlayableAsset
 {
-   public RoleAttackState_TL mTL;
+   public RoleAttackState_TL mParamAttackTL;
 
     public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
     {
+        // 2.创建
         var scriptPlayable = ScriptPlayable<PlayableBehaviourEx>.Create(graph);
 
-        scriptPlayable.GetBehaviour().mTL = mTL;
+        scriptPlayable.GetBehaviour().mRoleAttackTL = mParamAttackTL;
         return scriptPlayable;
     }
 }
